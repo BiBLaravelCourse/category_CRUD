@@ -40,6 +40,8 @@ Post
     <p class="text-muted">{{$post->updated_at->diffForHumans()}} by Hades</p>
     <hr>
     @endforeach
+
+    {{$posts->links()}}
   </div>
 
 </div>
