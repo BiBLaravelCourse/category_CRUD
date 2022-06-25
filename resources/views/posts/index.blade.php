@@ -36,8 +36,8 @@ Post
       </div>
       @endauth
     </div>
+    <p class="text-muted"><i>{{$post->updated_at->diffForHumans()}}</i><b> {{$post->name}}</b></p>
     <p>{{$post->body}}</p>
-    <p class="text-muted">{{$post->updated_at->diffForHumans()}} by Hades</p>
     <hr>
     @endforeach
 
