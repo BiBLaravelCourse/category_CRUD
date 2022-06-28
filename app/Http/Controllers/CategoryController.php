@@ -24,7 +24,6 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            'description' => 'required'
         ]);
 
         if($validator->fails()){
@@ -36,12 +35,11 @@ class CategoryController extends Controller
         $category = new Category();
 
         $category->name = $request->name;
-        $category->description = $request->description;
         $category->created_at = now();
         $category->updated_at = now();
         $category->save();
 
-        return redirect('/');
+        return redirect('/categories');
     }
 
     public function edit($id)
@@ -55,7 +53,6 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            'description' => 'required'
         ]);
         if($validator->fails()){
             return redirect('/categories/edit/{$id}')
@@ -66,12 +63,11 @@ class CategoryController extends Controller
         $category = Category::find($id);
         
         $category->name = $request->name;
-        $category->description = $request->description;
         $category->created_at = now();
         $category->updated_at = now();
         $category->save();
 
-        return redirect('/');
+        return redirect('/categories');
     }
 
     public function show($id)
@@ -88,6 +84,6 @@ class CategoryController extends Controller
         $post = Category::find($id);
         $post->delete();
 
-        return redirect('/');
+        return redirect('/categories');
     }
 }

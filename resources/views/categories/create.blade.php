@@ -20,13 +20,6 @@
       <p style="color:red">{{ $message }}</p>
       @enderror
     </div>
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea type="text" class="form-control" rows="5" name="description" value="{{ old('description')}}" placeholder="Write the Description"></textarea>
-      @error('description')
-      <p style="color:red">{{ $message }}</p>
-      @enderror
-    </div>
     <a href="/" class="btn btn-secondary">Cancle</a>
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
