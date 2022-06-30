@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'zeus@gmail.com',
             'password' => bcrypt('zeus'),
         ]);
-
-        $this->call(PostSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(PostSeeder::class);
+        
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

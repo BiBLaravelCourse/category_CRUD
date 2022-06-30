@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/posts">Posts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/categories">Categories</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -23,6 +26,9 @@
                 @if(Auth::check())
                 <li class="nav-item">
                     <a class="nav-link" href="/posts/create">Create A Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">My Post</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link fw-bold dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

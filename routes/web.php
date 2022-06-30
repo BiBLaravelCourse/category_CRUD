@@ -33,3 +33,16 @@ Route::get('/posts/show/{id}',[PostController::class,'show'] );
 Route::delete('/posts/delete/{id}',[PostController::class,'destroy'] );
 
 
+//Categories
+Route::get('/categories',[CategoryController::class,'index']);
+
+Route::get('/categories/create',[CategoryController::class,'create'])->middleware('myauth');
+Route::post('/categories/store',[CategoryController::class,'store']);
+
+Route::get('/categories/edit/{id}',[CategoryController::class,'edit'] );
+Route::post('/categories/update/{id}',[CategoryController::class,'update'] );
+
+Route::get('/categories/show/{id}',[CategoryController::class,'show'] );
+Route::delete('/categories/delete/{id}',[CategoryController::class,'destroy'] );
+
+

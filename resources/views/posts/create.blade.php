@@ -20,6 +20,7 @@
       <p style="color:red">{{ $message }}</p>
       @enderror
     </div>
+    
     <div class="mb-3">
       <label for="body" class="form-label">body</label>
       <textarea type="text" class="form-control" rows="5" name="body" value="{{ old('body')}}" placeholder="Write the body"></textarea>
@@ -27,6 +28,17 @@
       <p style="color:red">{{ $message }}</p>
       @enderror
     </div>
+
+    <div class="mb-3">
+      <label for="categories" class="form-label">Categories</label>
+      <select class="form-select" name="categories[]" multiple>
+        <option selected disabled>Open this select menu</option>
+        @foreach( $categories as $categorie)
+        <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+        @endforeach
+      </select>
+    </div>
+
     <a href="/" class="btn btn-secondary">Cancle</a>
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
