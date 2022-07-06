@@ -11,7 +11,7 @@
     <h3 class="text-center">Creating A Category</h3>
   </div>
 
-  <form action="/categories/store" method="POST">
+  <form action="{{route('categories.store'}}" method="POST">
     @csrf
     <div class="mb-3 mt-3">
       <label for="name" class="form-label">Name</label>
@@ -20,8 +20,8 @@
       <p style="color:red">{{ $message }}</p>
       @enderror
     </div>
-    <a href="/" class="btn btn-secondary">Cancle</a>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="{{route('categories.index'}}" class="btn btn-secondary">Cancle</a>
+    <button type="submit" class="btn btn-danger">Create</button>
   </form>
 </div>
 

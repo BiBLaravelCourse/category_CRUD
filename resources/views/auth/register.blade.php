@@ -8,7 +8,7 @@
 <div class="container w-50 bg-light rounded mt-3 justigy-content-center">
     <h4 class="text-center p-3">Register</h4>
     
-    <form action="/register" method="POST">
+    <form action="{{route('register.store')}}" method="POST">
         @csrf
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Name</label>
@@ -28,14 +28,14 @@
 
         <div class="mb-3 mt-3">
             <label for="password" class="form-label">Password</label>
-            <input type="text" class="form-control" name="password" value="" placeholder="Enter Your Password">
+            <input type="password" class="form-control" name="password" value="" placeholder="Enter Your Password">
             @error('password')
             <p style="color:red">{{ $message }}</p>
             @enderror
         </div>
 
-        <a href="/" class="btn btn-secondary">Cancle</a>
-      <button type="submit" class="btn btn-primary">Register</button>
+        <a href="{{route('home')}}" class="btn btn-secondary">Cancle</a>
+      <button type="submit" class="btn btn-danger">Register</button>
     </form>
 </div>
 @endsection

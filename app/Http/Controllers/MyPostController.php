@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
+
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyPostController extends Controller
 {
@@ -13,7 +17,15 @@ class MyPostController extends Controller
      */
     public function index()
     {
-        //
+        // $posts = Post::where('user_id',Auth::id())
+        // ->latest()
+        // ->paginate(5);
+
+        // $posts = User::find(Auth::id())->posts()->get();
+
+        $posts = Auth::user()->latestPost();
+
+        return view('my_posts.index', compact('posts'));
     }
 
     /**

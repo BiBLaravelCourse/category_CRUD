@@ -11,7 +11,7 @@
     <h3 class="text-center">Creating A Post</h3>
   </div>
 
-  <form action="/posts/store" method="POST">
+  <form action="{{route('posts.store')}}" method="POST">
     @csrf
     <div class="mb-3 mt-3">
       <label for="title" class="form-label">Title</label>
@@ -22,7 +22,7 @@
     </div>
     
     <div class="mb-3">
-      <label for="body" class="form-label">body</label>
+      <label for="body" class="form-label">Body</label>
       <textarea type="text" class="form-control" rows="5" name="body" value="{{ old('body')}}" placeholder="Write the body"></textarea>
       @error('body')
       <p style="color:red">{{ $message }}</p>
@@ -39,8 +39,8 @@
       </select>
     </div>
 
-    <a href="/" class="btn btn-secondary">Cancle</a>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="{{route('posts.index')}}" class="btn btn-outline-secondary">Cancle</a>
+    <button type="submit" class="btn btn-danger">Create</button>
   </form>
 </div>
 

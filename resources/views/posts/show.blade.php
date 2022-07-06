@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-  Show
+Show
 @endsection
 
 @section('content')
@@ -12,9 +12,23 @@
     </div>
 
     <div>
-        <h5 class="text-primary">{{$post->title}}</h5>
-        <p class="text-muted"><i>{{$post->updated_at->diffForHumans()}}</i><b> {{$post->author}}</b></p><br>
+        <h5 class="text-danger display-6">{{$post->title}}</h5>
+        <p class="text-muted"><i>{{$post->updated_at->diffForHumans()}}</i><b> {{$post->author->name}}</b></p>
+
         <p>{{$post->body}}</p>
+    </div>
+
+    <div>
+        @if($post->isOwnPost())
+        <div class="d-flex justify-content-between">
+            <a href="{{route('posts.edit',$post->id)}}" class="btn btn-danger">Edit</a>
+            <form action="{{route('posts.delete',$post->id)}}" method="POST" onclick="return confirm('Deleting this post! Are you sure?')">
+                @method('DELETE')
+                @csrf
+                <button type="submit" class="btn btn-secondary">Delete</button>
+            </form>
+        </div>
+        @endif
     </div>
 
 </div>

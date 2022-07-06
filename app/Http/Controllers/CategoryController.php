@@ -10,7 +10,12 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::when(request('search'),function($query){
+                            $query->where('name','like',"%".request('search')."%");
+                        })
+                        ->latest()
+                        ->paginate(5)
+                        ->withQueryString();
         
         return view('categories.index', compact('categories'));
     }
@@ -27,7 +32,7 @@ class CategoryController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/categories/create')
+            return redirect(route('categories.create'))
             ->withErrors($validator)
             ->withInput();
         }
@@ -39,12 +44,13 @@ class CategoryController extends Controller
         $category->updated_at = now();
         $category->save();
 
-        return redirect('/categories');
+        session()->flash('success', 'A Category was created succcessfully.');
+        return redirect(route('categories.index'));
     }
 
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
 
         return view('categories.edit',compact('category'));
     }
@@ -55,24 +61,25 @@ class CategoryController extends Controller
             'name' => 'required',
         ]);
         if($validator->fails()){
-            return redirect('/categories/edit/{$id}')
+            return redirect(route('categories.edit', $id))
             ->withErrors($validator)
             ->withInput();
         }
         
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         
         $category->name = $request->name;
         $category->created_at = now();
         $category->updated_at = now();
         $category->save();
 
-        return redirect('/categories');
+        session()->flash('success', 'A Category was edited succcessfully.');
+        return redirect(route('categories.index'));
     }
 
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
 
         return view('categories.show',compact('category'));
     }
@@ -81,9 +88,9 @@ class CategoryController extends Controller
     {
         // Category::destroy($id);
 
-        $post = Category::find($id);
+        $post = Category::findOrFail($id);
         $post->delete();
 
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 }

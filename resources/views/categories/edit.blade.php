@@ -11,17 +11,17 @@
       <h3 class="text-center">Editing Category</h3>
     </div>
 
-    <form action="/categories/update/{{$category->id}}" method="POST">
+    <form action="{{route('categories.update',$category->id)}}" method="POST">
       @csrf
       <div class="mb-3 mt-3">
         <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" name="name" value="{{$category->name}}">
+        <input type="text" class="form-control" name="name" value="{{ old('name',$category->name)}}">
         @error('name')
         <p style="color:red">{{ $message }}</p>
         @enderror
       </div>
-       <a href="/" class="btn btn-secondary">Cancle</a>
-      <button type="submit" class="btn btn-primary">Edit</button>
+       <a href="{{route('categories.index')}}" class="btn btn-secondary">Cancle</a>
+      <button type="submit" class="btn btn-danger">Edit</button>
     </form>
   </div>
 

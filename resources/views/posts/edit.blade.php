@@ -11,7 +11,7 @@
       <h3 class="text-center">Editing Post</h3>
     </div>
 
-    <form action="/posts/update/{{$post->id}}" method="POST">
+    <form action="{{route('posts.update',$post->id)}}" method="POST">
       @csrf
       <div class="mb-3 mt-3">
         <label for="title" class="form-label">Title</label>
@@ -39,8 +39,8 @@
       </select>
     </div>
 
-      <a href="/posts" class="btn btn-secondary">Cancle</a>
-      <button type="submit" class="btn btn-primary">Edit</button>
+      <a href="{{route('posts.index')}}" class="btn btn-outline-secondary">Cancle</a>
+      <button type="submit" class="btn btn-danger">Edit</button>
     </form>
   </div>
 

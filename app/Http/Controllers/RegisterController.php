@@ -22,7 +22,7 @@ class RegisterController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/register')
+            return redirect(route('register.create'))
             ->withErrors($validator)
             ->withInput();
         }
@@ -34,6 +34,6 @@ class RegisterController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect('/posts');
+        return redirect(route('home'));
     }
 }

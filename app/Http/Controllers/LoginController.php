@@ -25,7 +25,7 @@ class LoginController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/login')
+            return redirect(route('login.create'))
             ->withErrors($validator)
             ->withInput();
         }        
@@ -48,7 +48,7 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect('');
+        return redirect(route('posts.index'));
 
         //email + password -> verify
         //user info -> session
@@ -58,7 +58,7 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        return redirect('/posts');
+        return redirect(route('home'));
     }
 }
 
