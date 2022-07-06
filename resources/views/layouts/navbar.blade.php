@@ -28,7 +28,7 @@
                     <a class="nav-link" href="/posts/create">Create A Post</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Post</a>
+                    <a class="nav-link" href="/my-posts">My Post</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link fw-bold dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

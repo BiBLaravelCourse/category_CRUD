@@ -12,22 +12,15 @@ Post
     <div>
       <form>
         <div class="input-group mb-3">
-
           <input type="text" class="form-control" name="search" placeholder="Search..." value="{{request('search')}}">
-          <button class="btn btn-outline-secondary" type="button">Search</button>
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
         </div>
-
       </form>
     </div>
   </section>
 
   <section>
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('success') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+  @include('commom.aler')
 
     <div class="container bg-grey rounded p-1 mb-2">
       <h3 class="text-center">posts</h3>
@@ -59,13 +52,19 @@ Post
     </p>
 
     <p class="text-success"><span class="text-secondary">Categories: </span><i>{{$post->category}}</i>
-      @for( $x = $i+1 ; $x < $c ; $x++ )
-        @if( $post->id == $posts[$x]->id)
-        <i>, {{$posts[ $x ] ->category}}</i>
-        @else
-        @php( $x = $c )
-        @endif
-      @endfor        
+
+    <?php
+    for( $x=$i+1 ; $x < $c ; $x++){
+      if($post->id == $posts[$x]->id){
+        echo '<i>, '.$posts[ $x ] ->category.'</i>';
+      }
+      else{
+        $i = $x-1;
+        $x = $c;
+      }
+    }
+    ?>
+   
     </p>
     <p>{{$post->body}}</p>
     <hr>

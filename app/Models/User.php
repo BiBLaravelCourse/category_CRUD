@@ -44,8 +44,18 @@ class User extends Authenticatable
     ];
 
 
-    public function post()
+    public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function myPosts()
+    {
+        return $this->hasMany(Post::class,'user_id','id');
+    }
+
+    public function latestPost()
+    {
+        return $this->posts()->orderBy('id','desc')->paginate();
     }
 }

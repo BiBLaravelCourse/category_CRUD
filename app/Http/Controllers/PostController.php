@@ -37,7 +37,10 @@ class PostController extends Controller
         //         ->select('posts.*','categories.name as category')
         //         ->paginate(5);
 
-        $posts = Post::select('posts.*', 'categories.name as category',)
+        $posts = Post::when(request('search'), function($query){
+            $query->where('title','like','%'.request('search').'%');
+            })
+            ->select('posts.*', 'categories.name as category',)
             ->join('category_post', 'posts.id', '=', 'category_post.post_id')
             ->join('categories', 'category_post.category_id', '=', 'categories.id')
             ->orderBy('id', 'desc')
@@ -84,7 +87,10 @@ class PostController extends Controller
 
         $categories = $request->categories;
         foreach( $categories as $category){
-            DB::insert('insert into category_post (post_id,category_id) values (?, ?)', [$post->id, $category]);
+            DB::table('category_post')->insert([
+                'post_id' => $post->id,
+                'category_id' => $category,
+                ]);
         }    
 
         session()->flash('success', 'A post was created succcessfully.');
@@ -98,6 +104,10 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
+
+        $post_categories =  DB::table('category_post')
+                ->where('post_id', $id)
+                ->get();
 
         return view('posts.edit', compact('post','categories'));
     }
@@ -131,11 +141,17 @@ class PostController extends Controller
 
         $post->save();
 
+        //Old Category Data Delete
+        DB::table('category_post')->where('post_id', $post->id)->delete();
+        
+        //Insert New Category
         $categories = $request->categories;
         foreach( $categories as $category){
-            DB::insert('insert into category_post (post_id,category_id) values (?, ?)', [$post->id, $category]);
-        }
-
+            DB::table('category_post')->insert([
+                'post_id' => $post->id,
+                'category_id' => $category,
+                ]);
+        }    
         // session()->flash('success','Post was edited succcessfully.');
 
         return redirect('/posts')->with('success', 'Post was edited succcessfully.');
@@ -151,10 +167,17 @@ class PostController extends Controller
         //         ->select('posts.*', 'users.name',)
         //         ->first();
 
-        $post = Post::where('posts.id', '=', $id)   //find($id)
-            ->join('users', 'posts.user_id', '=', 'users.id')
-            ->select('posts.*', 'users.name as author')
-            ->first();
+        // $post = Post::where('posts.id', '=', $id)   //find($id)
+        //     ->join('users', 'posts.user_id', '=', 'users.id')
+        //     ->select('posts.*', 'users.name as author')
+        //     ->first();
+
+        $post = Post::select('posts.*', 'categories.name as category',)
+            ->join('category_post', 'posts.id', '=', 'category_post.post_id')
+            ->join('categories', 'category_post.category_id', '=', 'categories.id')
+            ->where('posts.id', $id)
+            ->get();
+        dd($post);
 
         return view('posts.show', compact('post'));
     }

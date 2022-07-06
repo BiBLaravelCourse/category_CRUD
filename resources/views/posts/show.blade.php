@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-  Show
+Show
 @endsection
 
 @section('content')
@@ -14,6 +14,12 @@
     <div>
         <h5 class="text-primary">{{$post->title}}</h5>
         <p class="text-muted"><i>{{$post->updated_at->diffForHumans()}}</i><b> {{$post->author}}</b></p><br>
+        <p class="text-success"><span class="text-secondary">Categories: </span>
+        <?php
+        foreach ($post as $p) {
+                echo '<i>, ' . $p->category . '</i>';
+        }
+        ?>
         <p>{{$post->body}}</p>
     </div>
 

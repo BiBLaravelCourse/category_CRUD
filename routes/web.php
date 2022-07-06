@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MyPostController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 
 //User
@@ -18,6 +19,9 @@ Route::delete('/logout',[LoginController::class,'destroy'] );
 
 //Page
 Route::view('/','index');
+
+//MyPosts
+Route::get('/my-posts',[MyPostController::class,'index']);
 
 
 //Posts
