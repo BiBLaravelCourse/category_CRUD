@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,7 @@ class MyPostController extends Controller
         // ->latest()
         // ->paginate(5);
 
-        // $posts = User::find(Auth::id())->posts()->paginate();
+        // $posts = User::find(Auth::id())->posts()->get();
 
         $posts = Auth::user()->latestPost();
 

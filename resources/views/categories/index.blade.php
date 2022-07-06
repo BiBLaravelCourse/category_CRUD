@@ -6,13 +6,13 @@ Home
 
 @section('content')
 
-<div class="container col-6 rounded bg-light mt-2 p-3">
+<div class="container col-8 rounded bg-light mt-2 p-3">
   @include('common.alert')
 
   <div class="row">
     <!-- Create -->
     <div class="col-6">
-      <a href="/categories/create" class="btn btn-primary">Create</a><br>
+      <a href="/categories/create" class="btn btn-danger">Create</a><br>
 
     </div>
     <!-- Search -->
@@ -21,14 +21,14 @@ Home
         <div class="input-group">
           <input type="search" class="form-control" name="search" placeholder="Search..." 
           value="{{request('search')}}">
-          <button class="btn btn-outline-secondary" type="submit">Search</button>
+          <button class="btn btn-danger" type="submit">Search</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Table -->
-  <div class="col-12">
+  <div class="col-12 mt-5">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -45,7 +45,7 @@ Home
           <td>{{$category->name}}</td>
           <td>{{$category->created_at->toFormattedDateString()}}</td>
           <td class="d-flex">
-            <a href="/categories/edit/{{ $category->id }}" class="btn btn-sm btn-outline-primary ms-2">Edit</a>
+            <a href="/categories/edit/{{ $category->id }}" class="btn btn-sm btn-outline-danger ms-2">Edit</a>
             <form action="/categories/delete/{{$category->id}}" method="POST" onclick="return confirm('Deleting this category! Are you sure?')">
               @method('DELETE')
               @csrf

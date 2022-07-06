@@ -21,7 +21,7 @@
       @enderror
     </div>
     <a href="/" class="btn btn-secondary">Cancle</a>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-danger">Create</button>
   </form>
 </div>
 

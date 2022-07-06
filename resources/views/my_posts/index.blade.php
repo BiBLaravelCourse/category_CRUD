@@ -4,10 +4,16 @@
 
 @section('content')
 
-@foreach( $posts as $post)
+<div class="container mt-4">
+    <div class="col-6 bg-light">
+        @foreach( $posts as $post)
 
-<li>{{$post->title}}</li>
+        <li>{{$post->title}}</li>
 
-@endforeach
+        @endforeach
+        {{ $posts->links() }}
+    </div>
+    
+</div>
 
 @endsection

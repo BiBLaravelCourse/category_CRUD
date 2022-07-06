@@ -39,8 +39,8 @@
       </select>
     </div>
 
-      <a href="/posts" class="btn btn-secondary">Cancle</a>
-      <button type="submit" class="btn btn-primary">Edit</button>
+      <a href="/posts" class="btn btn-outline-secondary">Cancle</a>
+      <button type="submit" class="btn btn-danger">Edit</button>
     </form>
   </div>
 

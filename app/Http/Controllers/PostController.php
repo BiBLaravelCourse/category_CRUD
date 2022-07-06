@@ -44,7 +44,7 @@ class PostController extends Controller
             ->join('category_post', 'posts.id', '=', 'category_post.post_id')
             ->join('categories', 'category_post.category_id', '=', 'categories.id')
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(5);
 
         return view('posts.index', compact('posts'));
     }
@@ -159,7 +159,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        // $post = Post::find($id);
+        $post = Post::find($id);
 
         // $post = DB::table('posts')
         //         ->where('posts.id', '=', $id)
@@ -171,13 +171,6 @@ class PostController extends Controller
         //     ->join('users', 'posts.user_id', '=', 'users.id')
         //     ->select('posts.*', 'users.name as author')
         //     ->first();
-
-        $post = Post::select('posts.*', 'categories.name as category',)
-            ->join('category_post', 'posts.id', '=', 'category_post.post_id')
-            ->join('categories', 'category_post.category_id', '=', 'categories.id')
-            ->where('posts.id', $id)
-            ->get();
-        dd($post);
 
         return view('posts.show', compact('post'));
     }
