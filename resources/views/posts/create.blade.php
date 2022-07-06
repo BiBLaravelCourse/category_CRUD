@@ -11,7 +11,7 @@
     <h3 class="text-center">Creating A Post</h3>
   </div>
 
-  <form action="/posts/store" method="POST">
+  <form action="{{route('posts.store')}}" method="POST">
     @csrf
     <div class="mb-3 mt-3">
       <label for="title" class="form-label">Title</label>
@@ -39,7 +39,7 @@
       </select>
     </div>
 
-    <a href="/" class="btn btn-outline-secondary">Cancle</a>
+    <a href="{{route('posts.index')}}" class="btn btn-outline-secondary">Cancle</a>
     <button type="submit" class="btn btn-danger">Create</button>
   </form>
 </div>

@@ -12,8 +12,7 @@ Home
   <div class="row">
     <!-- Create -->
     <div class="col-6">
-      <a href="/categories/create" class="btn btn-danger">Create</a><br>
-
+      <a href="{{route('categories.create')}}" class="btn btn-danger">Create</a><br>
     </div>
     <!-- Search -->
     <div class="col-6">
@@ -45,8 +44,8 @@ Home
           <td>{{$category->name}}</td>
           <td>{{$category->created_at->toFormattedDateString()}}</td>
           <td class="d-flex">
-            <a href="/categories/edit/{{ $category->id }}" class="btn btn-sm btn-outline-danger ms-2">Edit</a>
-            <form action="/categories/delete/{{$category->id}}" method="POST" onclick="return confirm('Deleting this category! Are you sure?')">
+            <a href="{{route('categories.edit', $category->id)}}" class="btn btn-sm btn-outline-danger ms-2">Edit</a>
+            <form action="{{route('categories.delete', $category->id)}}" method="POST" onclick="return confirm('Deleting this category! Are you sure?')">
               @method('DELETE')
               @csrf
               <button type="submit" class="btn btn-sm btn-outline-secondary ms-3">Delete</button>

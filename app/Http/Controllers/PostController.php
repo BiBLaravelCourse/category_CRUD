@@ -63,7 +63,7 @@ class PostController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/posts/create')
+            return redirect(route('posts.create'))
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -97,7 +97,7 @@ class PostController extends Controller
 
         // $request->session()->flash('success','A post was created succcessfully.');
 
-        return redirect('/posts');
+        return redirect(route('posts.index'));
     }
 
     public function edit($id)
@@ -119,7 +119,7 @@ class PostController extends Controller
             'body' => 'required'
         ]);
         if ($validator->fails()) {
-            return redirect('/posts/edit/{$id}')
+            return redirect(route('posts.edit',$id))
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -154,7 +154,7 @@ class PostController extends Controller
         }    
         // session()->flash('success','Post was edited succcessfully.');
 
-        return redirect('/posts')->with('success', 'Post was edited succcessfully.');
+        return redirect(route('posts.index'))->with('success', 'Post was edited succcessfully.');
     }
 
     public function show($id)
@@ -182,6 +182,6 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->delete();
 
-        return redirect('/posts')->with('success', 'Post was deleted succcessfully.');
+        return back()->with('success', 'Your Post was deleted succcessfully.');
     }
 }

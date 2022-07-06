@@ -45,8 +45,8 @@ Post
             <div>
               @if($post->isOwnPost())
               <div class="d-flex">
-                <a href="/posts/edit/{{ $post->id }}" class="btn btn-sm btn-outline-danger">Edit</a>
-                <form action="/posts/delete/{{$post->id}}" method="POST" onclick="return confirm('Deleting this post! Are you sure?')">
+                <a href="{{route('posts.edit',$post->id)}}" class="btn btn-sm btn-outline-danger">Edit</a>
+                <form action="{{route('posts.delete',$post->id)}}" method="POST" onclick="return confirm('Deleting this post! Are you sure?')">
                   @method('DELETE')
                   @csrf
                   <button type="submit" class="btn btn-sm btn-outline-secondary ms-2">Delete</button>
@@ -54,7 +54,7 @@ Post
               </div>
               @endif
             </div>
-            <a href="/posts/show/{{$post->id}}" class="btn btn-danger text-uppercase float-end">View More</a>
+            <a href="{{route('posts.show',$post->id)}}" class="btn btn-danger text-uppercase float-end">View More</a>
           </div>
         </div>
     </div>

@@ -32,7 +32,7 @@ class CategoryController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/categories/create')
+            return redirect(route('categories.create'))
             ->withErrors($validator)
             ->withInput();
         }
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $category->save();
 
         session()->flash('success', 'A Category was created succcessfully.');
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 
     public function edit($id)
@@ -61,7 +61,7 @@ class CategoryController extends Controller
             'name' => 'required',
         ]);
         if($validator->fails()){
-            return redirect('/categories/edit/{$id}')
+            return redirect(route('categories.edit', $id))
             ->withErrors($validator)
             ->withInput();
         }
@@ -74,7 +74,7 @@ class CategoryController extends Controller
         $category->save();
 
         session()->flash('success', 'A Category was edited succcessfully.');
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 
     public function show($id)
@@ -91,6 +91,6 @@ class CategoryController extends Controller
         $post = Category::findOrFail($id);
         $post->delete();
 
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 }

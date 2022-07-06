@@ -21,8 +21,8 @@ Show
     <div>
         @if($post->isOwnPost())
         <div class="d-flex justify-content-between">
-            <a href="/posts/edit/{{ $post->id }}" class="btn btn-danger">Edit</a>
-            <form action="/posts/delete/{{$post->id}}" method="POST" onclick="return confirm('Deleting this post! Are you sure?')">
+            <a href="{{route('posts.edit',$post->id)}}" class="btn btn-danger">Edit</a>
+            <form action="{{route('posts.delete',$post->id)}}" method="POST" onclick="return confirm('Deleting this post! Are you sure?')">
                 @method('DELETE')
                 @csrf
                 <button type="submit" class="btn btn-secondary">Delete</button>
