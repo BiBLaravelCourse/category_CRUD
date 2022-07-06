@@ -27,7 +27,7 @@
         </div>
 
         <a href="/" class="btn btn-secondary">Cancle</a>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="btn btn-danger">Login</button>
     </form>
 </div>
 @endsection
