@@ -1,12 +1,26 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MyPostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+
+//File
+Route::get('/file/create', function(){
+    Storage::put('marvel.txt','Ironman');
+});
+
+Route::get('/file/read', function(){
+    return Storage::get('marvel.txt');
+});
+
+Route::get('/file/delete', function(){
+    Storage::delete('marvel.txt');
+});
 
 //User
 Route::get('/register',[RegisterController::class,'create'] )->name('register.create');
@@ -19,6 +33,11 @@ Route::delete('/logout',[LoginController::class,'destroy'])->name('logout');
 
 //Page
 Route::view('/','index')->name('home');
+
+//Profile
+Route::get('/profile',[ProfileController::class,'index'])->name('profile');
+Route::get('/profile/edit',[ProfileController::class,'edit'])->name('profile.edit');
+Route::post('/profile/update',[ProfileController::class,'update'])->name('profile.update');
 
 //MyPosts
 Route::get('/my-posts',[MyPostController::class,'index'])->name('my-posts.index');

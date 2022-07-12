@@ -43,7 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -52,6 +51,11 @@ class User extends Authenticatable
     public function myPosts()
     {
         return $this->hasMany(Post::class,'user_id','id');
+    }
+
+    public function profile_image()
+    {
+        return $this->hasOne(Image::class,'imageable_id','id');
     }
 
     public function latestPost()
