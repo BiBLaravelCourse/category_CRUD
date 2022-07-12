@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class,'user_id','id');
     }
 
+    public function profile_image()
+    {
+        return $this->hasOne(Image::class,'imageable_id','id');
+    }
+
     public function latestPost()
     {
         return $this->posts()->orderBy('id','desc')->paginate();
