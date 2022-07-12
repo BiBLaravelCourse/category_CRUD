@@ -16,26 +16,18 @@ Post
     <div class="col-md-8">
       @if($posts->count()) @php( $c=$posts->count())
       @for( $i = 0 ; $i < $c ; $i++ ) @php( $post=$posts[$i] ) <div class="card mb-4">
-        <img src="https://colorlibhub.com/sparkling/wp-content/uploads/sites/52/2014/03/slider-image-blurry-750x410.jpg" alt="Post Image">
+        <img src="{{ Storage::url($post->images[0]->path) }}" alt="Post Image">
         <div class="card-body">
           <h4 class="card-title">{{ $post->title}}</h4>
-          <p class="text-muted m-0">{{ $post->created_at->toFormattedDateString() }}
+          <p class="text-muted">{{ $post->created_at->toFormattedDateString() }}
             by
             <span class="text-danger">{{ $post->author->name}}</span>
-          </p>
-
+          
           <!-- Post Category -->
-          <p class="text-danger"><span class="text-secondary">Categories: </span><i>{{$post->category}}</i>
-            <?php
-            for ($x = $i + 1; $x < $c; $x++) {
-              if ($post->id == $posts[$x]->id) {
-                echo '<i>, ' . $posts[$x]->category . '</i>';
-              } else {
-                $i = $x - 1;
-                $x = $c;
-              }
-            }
-            ?>
+          @foreach( $post->categories as $category)
+          <span class="badge text-bg-info">{{$category->name}}</span>
+          @endforeach
+
           </p>
 
           <p class="card-text text-muted">{{ $post->body }}</p>

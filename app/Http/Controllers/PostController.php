@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\PostImage;
 
+use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
+        $posts = Post::where('title','like','%'.$request->search.'%')->orderby('id','desc')->paginate();
+
+        return view('posts.index', compact('posts'));
         // $posts = Post::all();
 
         // $posts = Post::paginate(2);
-
 
         // $posts = Post::where('title','like','%'.$request->search.'%')->paginate(5);
 
@@ -37,16 +42,14 @@ class PostController extends Controller
         //         ->select('posts.*','categories.name as category')
         //         ->paginate(5);
 
-        $posts = Post::when(request('search'), function($query){
-            $query->where('title','like','%'.request('search').'%');
-            })
-            ->select('posts.*', 'categories.name as category',)
-            ->join('category_post', 'posts.id', '=', 'category_post.post_id')
-            ->join('categories', 'category_post.category_id', '=', 'categories.id')
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-
-        return view('posts.index', compact('posts'));
+        // $posts = Post::when(request('search'), function($query){
+        //     $query->where('title','like','%'.request('search').'%');
+        //     })
+        //     ->select('posts.*', 'categories.name as category',)
+        //     ->join('category_post', 'posts.id', '=', 'category_post.post_id')
+        //     ->join('categories', 'category_post.category_id', '=', 'categories.id')
+        //     ->orderBy('id', 'desc')
+        //     ->paginate(5);
     }
 
     public function create()
@@ -55,27 +58,41 @@ class PostController extends Controller
         return view('posts.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'body' => 'required',
+        // Create New Post
+        $post = auth()->user()->posts()->create([
+            'title' => $request->title,
+            'body' => $request->body,
         ]);
 
-        if ($validator->fails()) {
-            return redirect(route('posts.create'))
-                ->withErrors($validator)
-                ->withInput();
+        //Upload Multiple Image
+        foreach($request->file('images') as $file){
+            $filename = time().'_'.$file->getClientOriginalName();
+            $dir = '/upload/images';
+
+            $path = $file->storeAs($dir, $filename);
+
+            PostImage::create([
+                'post_id' => $post->id,
+                'path' => $path,
+            ]);
         }
 
-        $post = new Post();
+        //Add Category
+        $post->categories()->attach($request->categories);
 
-        $post->title = $request->title;
-        $post->body = $request->body;
-        $post->user_id = auth()->id();
-        $post->created_at = now();
-        $post->updated_at = now();
-        $post->save();
+        session()->flash('success', 'A post was created succcessfully.');
+        return redirect(route('posts.index'));
+
+        // $post = new Post();
+
+        // $post->title = $request->title;
+        // $post->body = $request->body;
+        // $post->user_id = auth()->id();
+        // $post->created_at = now();
+        // $post->updated_at = now();
+        // $post->save();
 
         // Post::create([
         //     'title' => $request->title,
@@ -85,46 +102,60 @@ class PostController extends Controller
         //     'updated_at' => now(),
         // ]);
 
-        $categories = $request->categories;
-        foreach( $categories as $category){
-            DB::table('category_post')->insert([
-                'post_id' => $post->id,
-                'category_id' => $category,
-                ]);
-        }    
-
-        session()->flash('success', 'A post was created succcessfully.');
+        // $categories = $request->categories;
+        // foreach( $categories as $category){
+        //     DB::table('category_post')->insert([
+        //         'post_id' => $post->id,
+        //         'category_id' => $category,
+        //         ]);
+        // }    
+      
 
         // $request->session()->flash('success','A post was created succcessfully.');
-
-        return redirect(route('posts.index'));
     }
 
     public function edit($id)
     {
         $post = Post::find($id);
         $categories = Category::all();
+        $oldCategories = $post->categories->pluck('id')->toArray();
 
-        $post_categories =  DB::table('category_post')
-                ->where('post_id', $id)
-                ->get();
-
-        return view('posts.edit', compact('post','categories'));
+        return view('posts.edit', compact('post','categories','oldCategories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'body' => 'required'
+        $post = Post::findOrFail($id);
+
+        // Post Update
+        $post->update([
+            'title' => $request->title,
+            'body' => $request->body,
         ]);
-        if ($validator->fails()) {
-            return redirect(route('posts.edit',$id))
-                ->withErrors($validator)
-                ->withInput();
+
+        // Delete Old Image
+        foreach( $post->images as $image){
+            Storage::delete($image->path);
+            PostImage::where('post_id', $post->id)->delete();
         }
 
-        $post = Post::find($id);
+        // Upload Multiple Image
+        foreach($request->file('images') as $file){
+            $filename = time().'_'.$file->getClientOriginalName();
+            $dir = '/upload/images';
+
+            $path = $file->storeAs($dir, $filename);
+
+            PostImage::create([
+                'post_id' => $post->id,
+                'path' => $path,
+            ]);
+        }
+
+        // Update Category
+        $post->categories()->sync($request->categories);
+
+        return redirect(route('posts.index'))->with('success', 'Post was edited succcessfully.');
 
         // $post->title = $request->title;
         // $post->body = $request->body;
@@ -137,24 +168,22 @@ class PostController extends Controller
         //     'updated_at' => now(),
         // ]);
 
-        $post->update($request->only(['title', 'body']));
+        // $post->update($request->only(['title', 'body']));
 
-        $post->save();
+        // $post->save();
 
         //Old Category Data Delete
-        DB::table('category_post')->where('post_id', $post->id)->delete();
+        // DB::table('category_post')->where('post_id', $post->id)->delete();
         
         //Insert New Category
-        $categories = $request->categories;
-        foreach( $categories as $category){
-            DB::table('category_post')->insert([
-                'post_id' => $post->id,
-                'category_id' => $category,
-                ]);
-        }    
+        // $categories = $request->categories;
+        // foreach( $categories as $category){
+        //     DB::table('category_post')->insert([
+        //         'post_id' => $post->id,
+        //         'category_id' => $category,
+        //         ]);
+        // }    
         // session()->flash('success','Post was edited succcessfully.');
-
-        return redirect(route('posts.index'))->with('success', 'Post was edited succcessfully.');
     }
 
     public function show($id)

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-  Create
+  Create Post
 @endsection
 
 @section('content')
@@ -11,36 +11,60 @@
     <h3 class="text-center">Creating A Post</h3>
   </div>
 
-  <form action="{{route('posts.store')}}" method="POST">
+  <form action="{{route('posts.store')}}" method="POST" enctype="multipart/form-data">
     @csrf
-    <div class="mb-3 mt-3">
+
+    <div class="mt-3 mb-3">
+      <label for="images[]" class="form-label">Image Upload</label>
+      <input type="file" class="form-control @error('images') is-invalid @enderror @error('images.*') is-invalid @enderror" name="images[]" multiple>
+      @error('images')
+      <div class="invalid-feedback">{{ $message }}</div>
+      @enderror
+
+      @foreach( $errors->get('images.*') as $message)
+      <div class="invalid-feedback">{{ $message[0] }}</div>
+      @endforeach
+      
+    </div>
+
+    <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" name="title" value="{{ old('title')}}" placeholder="Write title">
+      <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title')}}" placeholder="Write title">
       @error('title')
-      <p style="color:red">{{ $message }}</p>
+      <div class="invalid-feedback">{{ $message }}</div>
       @enderror
     </div>
     
     <div class="mb-3">
       <label for="body" class="form-label">Body</label>
-      <textarea type="text" class="form-control" rows="5" name="body" value="{{ old('body')}}" placeholder="Write the body"></textarea>
+      <textarea type="text" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="Write the body">{{ old('body')}}</textarea>
       @error('body')
-      <p style="color:red">{{ $message }}</p>
+      <div class="invalid-feedback">{{ $message }}</div>
       @enderror
     </div>
 
     <div class="mb-3">
-      <label for="categories" class="form-label">Categories</label>
-      <select class="form-select" name="categories[]" multiple>
+      <label for="categories[]" class="form-label">Post Category</label>
+      <select name="categories[]" class="form-select @error('categories') is-invalid @enderror" multiple>
         <option selected disabled>Open this select menu</option>
-        @foreach( $categories as $categorie)
-        <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+        @foreach( $categories as $category)
+        <option value="{{$category->id}}"
+          @if( in_array($category->id, old('categories',[]) ))
+            selected
+          @endif
+          >{{$category->name}}</option>
         @endforeach
       </select>
+      @error('categories')
+      <div class="invalid-feedback">{{ $message }}</div>
+      @enderror
     </div>
 
-    <a href="{{route('posts.index')}}" class="btn btn-outline-secondary">Cancle</a>
+    <div class="d-flex justify-content-between">
     <button type="submit" class="btn btn-danger">Create</button>
+    <a href="{{route('posts.index')}}" class="btn btn-outline-secondary">Cancle</a>
+    </div>
+    
   </form>
 </div>
 

@@ -11,12 +11,23 @@ Show
         <h3 class="text-center">Post Detail</h3>
     </div>
 
-    <div>
+    <div class="card mb-4">
+        <img src="{{ Storage::url($post->images[0]->path) }}" alt="Post Image">
         <h5 class="text-danger display-6">{{$post->title}}</h5>
-        <p class="text-muted"><i>{{$post->updated_at->diffForHumans()}}</i><b> {{$post->author->name}}</b></p>
+        <p class="text-muted">
+            {{ $post->created_at->toFormattedDateString() }}
+            by
+            <span class="text-danger">{{ $post->author->name}}</span>
+          
+          <!-- Post Category -->
+          @foreach( $post->categories as $category)
+          <span class="badge text-bg-info">{{$category->name}}</span>
+          @endforeach
+
+          </p>
 
         <p>{{$post->body}}</p>
-    </div>
+    
 
     <div>
         @if($post->isOwnPost())
@@ -29,6 +40,7 @@ Show
             </form>
         </div>
         @endif
+    </div>
     </div>
 
 </div>
