@@ -24,6 +24,24 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
+            'images' => 'required|array',
+            'images.*' => 'required|file|mimes:jpg,jpeg,png',
+            'title' => 'required',
+            'body' => 'required|min:6',
+            'categories' => 'required|array',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'categories.required' => 'Choose one or more category',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
             //
         ];
     }
