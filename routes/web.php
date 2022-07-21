@@ -9,18 +9,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 
-//File
-Route::get('/file/create', function(){
-    Storage::put('marvel.txt','Ironman');
-});
-
-Route::get('/file/read', function(){
-    return Storage::get('marvel.txt');
-});
-
-Route::get('/file/delete', function(){
-    Storage::delete('marvel.txt');
-});
 
 //User
 Route::get('/register',[RegisterController::class,'create'] )->name('register.create');
