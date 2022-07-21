@@ -62,4 +62,12 @@ class User extends Authenticatable
     {
         return $this->posts()->orderBy('id','desc')->paginate();
     }
+    public function photo()
+    {
+        if($this->profile_image){
+            return $this->profile_image->path;
+        }
+
+        return '/storage/images/profile_avater_full.png';
+    }
 }
